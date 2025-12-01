@@ -1,0 +1,49 @@
+openapi: 3.0.3
+info:
+  title: Byt-Wyze SAT Maker API
+  version: 1.0.0
+  description: Deterministic CES-weighted SAT instance generator.
+
+servers:
+  - url: https://byt-wyze.com/api/sat-maker
+
+paths:
+  /generate:
+    post:
+      summary: Generate a deterministic SAT instance.
+      description: Returns a CNF instance plus metadata.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                n_vars:
+                  type: integer
+                n_clauses:
+                  type: integer
+                family:
+                  type: string
+                  enum: [structured, random]
+                ces_min:
+                  type: number
+                ces_max:
+                  type: number
+                seed:
+                  type: integer
+                format:
+                  type: string
+                  enum: [dimacs, json]
+      responses:
+        "200":
+          description: SAT instance generated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cnf:
+                    type: string
+                  metadata:
+                    type: object
